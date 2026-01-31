@@ -1,0 +1,22 @@
+services:
+    db:
+        image: postgres:17
+        container_name: IntuitiveCare-DB
+        environment:
+            - POSTGRES_USER=root
+            - POSTGRES_PASSWORD=root
+            - POSTGRES_DB=intuitiveCareDB
+        ports:
+            - "5432:5432"
+        volumes:
+            - ./database/:/docker-entrypoint-initdb.d/init.sql
+    pgadmin:
+        image: dpage/pgadmin4
+        container_name: intuitive_care_pgadmin
+        environment:
+            - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+            - PGADMIN_DEFAULT_PASSWORD=root
+        ports:
+        - "54321:80"
+        depends_on:
+        - db

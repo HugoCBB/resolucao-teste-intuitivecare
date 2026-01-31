@@ -1,6 +1,5 @@
 import asyncio
 from playwright.async_api import async_playwright
-from time import sleep
 from typing import List
 from pathlib import Path
 import os
@@ -16,8 +15,8 @@ URL_OPERADORAS = f"{URL_BASE}/operadoras_de_plano_de_saude_ativas"
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-FILE_ZIP_FOLDER = os.path.join(BASE_DIR, "download_ans","zip")
-FILE_CSV_FOLDER = os.path.join(BASE_DIR, "download_ans","csv")
+FILE_ZIP_FOLDER = os.path.join(BASE_DIR, "data","zip")
+FILE_CSV_FOLDER = os.path.join(BASE_DIR, "data","csv")
 
 
 os.makedirs(FILE_ZIP_FOLDER, exist_ok=True)
@@ -78,7 +77,7 @@ def descompactar_arquivos_zip(file_name: str):
     """Responsavel por extrair os arquivos zip automaticamente"""
     file_src = os.path.join(FILE_ZIP_FOLDER, file_name)
     
-    if os.path.exists(file_src):
+    if not os.path.exists(file_src):
         print(f"Arquivo {file_name} ja foi descompactado em {file_src}")
         return
     
@@ -122,7 +121,7 @@ async def buscar_dados_ans():
                 await processar_secao_ans(page, url_final)
             
             await page.goto(URL_OPERADORAS)
-            sleep(5)
+            await page.wait_for_timeout(5000)
             await processar_secao_ans(page, URL_OPERADORAS)
 
         finally:

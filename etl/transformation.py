@@ -9,14 +9,14 @@ from validate_docbr import CNPJ
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-FILE_CSV_FOLDER = os.path.join(BASE_DIR, "download_ans","csv")
-FILE_ZIP_OUTPUT = os.path.join(BASE_DIR, "download_ans", "csv", "consolidado_despesas.csv")
+FILE_CSV_FOLDER = os.path.join(BASE_DIR, "data","csv")
+FILE_ZIP_OUTPUT = os.path.join(BASE_DIR, "data", "csv", "consolidado_despesas.csv")
 FILE_OPERADORAS = os.path.join(FILE_CSV_FOLDER, "Relatorio_cadop.csv")
 FILE_METRICAS = os.path.join(FILE_CSV_FOLDER, "despesas_agregadas.csv")
 
 
 def carregar_cadastro_operadoras() -> pd.DataFrame:
-    """Funcao responsaveel por ler o cadastro de operadoras e prepara o índice para busca."""
+    """Funcao responsavel por ler o cadastro de operadoras e prepara o índice para busca."""
 
     try:
         df_cadop = pd.read_csv(FILE_OPERADORAS, sep=";", dtype=str, encoding='utf-8-sig')
