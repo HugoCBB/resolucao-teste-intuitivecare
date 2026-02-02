@@ -11,10 +11,20 @@ routes = APIRouter()
 async def get_all_operators(
     db: Session = Depends(get_db),
     page: int = Query(1, ge=1),
-    limit: int = Query(10, ge=1, le=100)):
+    limit: int = Query(10, ge=1, le=100),
+    search: str = Query(None)):
+    
+    query = db.query(Operadora)
+    
+    if search:
+        search_term = f"%{search}%"
+        query = query.filter(
+            (Operadora.razao_social.ilike(search_term)) | 
+            (Operadora.cnpj.ilike(search_term))
+        )
     
     offset = (page - 1) * limit
-    operators = db.query(Operadora).offset(offset).limit(limit).all()
+    operators = query.offset(offset).limit(limit).all()
     
     results = []
     for op in operators:
