@@ -10,6 +10,9 @@ CREATE TABLE IF NOT EXISTS despesas_consolidadas (
 	valor_despesa DECIMAL(17, 2) NOT NULL 
 );
 
+
+
+
 CREATE TABLE IF NOT EXISTS operadoras (
 	id SERIAL PRIMARY KEY,
 	registro_ans CHAR(6) NOT NULL,
