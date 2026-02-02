@@ -83,6 +83,16 @@ def descompactar_arquivos_zip(file_name: str):
         print(f"{file_name} extraido em {FILE_CSV_FOLDER}")
 
 
+def compactar_arquivo_zip(file_path: str, zip_path: str):
+    """Responsavel por compactar arquivos em zip"""
+    try:
+        with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
+            zipf.write(file_path, os.path.basename(file_path))
+        print(f"Arquivo zip criado com sucesso: {zip_path}")
+    except Exception as e:
+        print(f"Erro ao criar zip: {e}")
+
+
 async def processar_secao_ans(page, url_secao):
     """Funcao responsavel por processar a secao que esta ocorrendo"""
     try:

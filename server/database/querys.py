@@ -1,62 +1,5 @@
-from sqlalchemy import create_engine, text, inspect
 import pandas as pd
-from pathlib import Path
-import os
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-FILE_CSV_FOLDER = os.path.join(BASE_DIR, "data", "csv")
-SCHEMA_PATH = os.path.join(BASE_DIR, "database", "schema.sql")
-
-dsn = "postgresql://root:root@localhost:5432/intuitiveCareDB"
-engine = create_engine(dsn)
-inspector = inspect(engine)
-
-def iniciar_infraestrutura():
-    with engine.connect() as connection:
-        connection.execute(text("DROP SCHEMA IF EXISTS public CASCADE;"))
-        connection.execute(text("CREATE SCHEMA public;"))
-        connection.execute(text("GRANT ALL ON SCHEMA public TO public;"))
-
-        if os.path.exists(SCHEMA_PATH):
-            with open(SCHEMA_PATH, "r") as s:
-                sql_schema = s.read()
-                connection.execute(text(sql_schema))            
-            print("Tabelas criadas com sucesso")
-        else:
-            print(f"Arquivo {SCHEMA_PATH} nao encontrado")
-
-
-def migrar_sql(file_name, table_name, colum_zero=None, colum_value=None):
-    """Funcao responsavel por migrar dados de tabela csv para banco de dados"""
-    file_path = os.path.join(FILE_CSV_FOLDER, file_name)
-
-    if table_name in inspector.get_table_names():
-        print(f"A tabela {table_name} ja existe")
-        return
-    
-    df = pd.read_csv(file_path, sep=";", dtype=str, encoding='latin1')
-    df.columns = df.columns.str.lower().str.strip().str.replace(' ', '_')
-
-    df = df.rename(columns={'registro_operadora': 'registro_ans'})
-
-    if colum_zero:
-        for col, tamanho in colum_zero.items():
-            col_norm = col.lower().replace(' ', '_')    
-            if col_norm in df.columns:
-                df[col] = df[col].str.zfill(tamanho)
-
-    if colum_value:
-        cols_limpar = [colum_value] if isinstance(colum_value, str) else colum_value
-
-        for col_orig in cols_limpar:
-            col_norm = col_orig.lower().replace(' ', '_')    
-            
-            if col_norm in df.columns:
-                df[col_norm] = df[col_norm].str.replace('.', '', regex=False).str.replace(',', '.', regex=False).astype(float)
-
-    df.to_sql(table_name, con=engine, index=False)
-    print(f"Tabela {table_name}, exportado com sucesso")
+from .db import engine
 
 def maior_crescimento_operadoras():
     """Funcao responsavel por verificar as 5 operadoras com os maior crescimento levando em conta o tamanho da operadora"""
@@ -132,29 +75,9 @@ def despesas_acima_media_geral():
     print(f"Total de operadoras: {len(resultado)}")
     print(resultado_final[['razao_social', 'registro_ans', 'quantidade_trimestres']].head())
 
+
 if __name__ == "__main__":
-    iniciar_infraestrutura()
-
-    migrar_sql(
-        "consolidado_despesas.csv",
-        "despesas_consolidadas",
-        colum_zero={'cnpj': 14, 'registro_ans': 6}, 
-        colum_value='VALOR DESPESA'
-    )
-
-    migrar_sql(
-        "Relatorio_cadop.csv", 
-        "operadoras",
-        colum_zero={'cnpj': 14, 'registro_ans': 6, 'cep': 8}
-    )
-
-    migrar_sql(
-        "despesas_agregadas.csv", 
-        "dados_agregados", 
-        colum_value=['Total_Geral', 'Media_Trimestral', 'Desvio_Padrao_Despesas']
-    )
-
+    
     maior_crescimento_operadoras()
     distribuicao_despesas_uf()
     despesas_acima_media_geral()
-    
