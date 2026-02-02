@@ -23,8 +23,6 @@ os.makedirs(FILE_ZIP_FOLDER, exist_ok=True)
 os.makedirs(FILE_CSV_FOLDER, exist_ok=True)
 
 
-
-
 def extrair_anos_limpos(data: List ) -> List:
     """Responsavel por filtrar os nomes de cada pasta"""
     anos = []
@@ -46,7 +44,7 @@ def extrair_arquivos(data: List) -> List:
     return file_clean
 
 async def baixar_arquivos(page, src: str, file_name: str):
-    """Funcao responvavel por baixar os arquivos por tipo"""
+    """Funcao responsavel por baixar os arquivos por tipo"""
 
     if file_name.lower().endswith('.csv'):
         final_download = os.path.join(FILE_CSV_FOLDER, file_name)
@@ -58,7 +56,6 @@ async def baixar_arquivos(page, src: str, file_name: str):
         return  
     
     try:
-        url = f"{src}/{file_name}"
         print(f"Baixando arquivo: {file_name}")
         
         async with page.expect_download() as p:
