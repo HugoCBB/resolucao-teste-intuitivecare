@@ -35,6 +35,9 @@ source ./venv/bin/activate #Linux / Mac
 pip install -r requirements.txt
 playwright install firefox
 
+# Com o docker instalado execute o docker-compose.yaml
+docker compose up --build -d
+
 # Executar o ETL (Extração e Transformação)
 # Isso baixará os arquivos, processará e gerará os CSVs/ZIPs em data/
 python etl/extraction.py
