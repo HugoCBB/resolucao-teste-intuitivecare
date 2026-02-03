@@ -1,13 +1,13 @@
 {
 	"info": {
-		"_postman_id": "intuitive-care-test-id",
+		"_postman_id": "intuitive-care-test-final",
 		"name": "Intuitive Care API",
-		"description": "Coleção de rotas para o teste técnico da Intuitive Care (ETL & Visualization).",
+		"description": "Coleção de rotas para o teste técnico da Intuitive Care (ETL & Visualization). Inclui exemplos de respostas esperadas.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "1. Listar Operadoras (Busca & Paginação)",
+			"name": "1. Listar Operadoras",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -25,23 +25,61 @@
 						{
 							"key": "page",
 							"value": "1",
-							"description": "Número da página (Default: 1)"
+							"description": "Página atual"
 						},
 						{
 							"key": "limit",
 							"value": "10",
-							"description": "Itens por página (Default: 10, Max: 100)"
+							"description": "Itens por página"
 						},
 						{
 							"key": "search",
 							"value": "",
-							"description": "Termo para busca em Razão Social ou CNPJ (Opcional)"
+							"description": "Filtro opcional (Razão Social ou CNPJ)"
 						}
 					]
-				},
-				"description": "Retorna uma lista paginada de operadoras. Permite filtrar por texto usando o parâmetro `search`."
+				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Exemplo de Sucesso",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/operadoras?page=1&limit=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"operadoras"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"body": "[\n  {\n    \"registro_ans\": \"303030\",\n    \"cnpj\": \"12345678000199\",\n    \"razao_social\": \"EXEMPLO SAUDE LTDA\",\n    \"nome_fantasia\": \"EXEMPLO SAUDE\",\n    \"modalidade\": \"Cooperativa Médica\",\n    \"logradouro\": \"Rua Exemplo\",\n    \"numero\": \"100\",\n    \"complemento\": \"Sala 1\",\n    \"bairro\": \"Centro\",\n    \"cidade\": \"Rio de Janeiro\",\n    \"uf\": \"RJ\",\n    \"cep\": \"20000-000\",\n    \"ddd\": \"21\",\n    \"telefone\": \"2222-3333\",\n    \"fax\": null,\n    \"endereco_eletronico\": \"contato@exemplo.com.br\",\n    \"representante\": \"JOAO DA SILVA\",\n    \"cargo_representante\": \"Diretor\",\n    \"regiao_de_comercializacao\": \"Nacional\",\n    \"data_registro_ans\": \"2000-01-01\",\n    \"id\": 1,\n    \"status\": \"Ativa com despesas\"\n  }\n]"
+				}
+			]
 		},
 		{
 			"name": "2. Buscar Operadora por CNPJ",
@@ -63,13 +101,42 @@
 						{
 							"key": "cnpj",
 							"value": "00000000000191",
-							"description": "CNPJ da operadora (apenas números ou string exata do banco)"
+							"description": "CNPJ da Operadora"
 						}
 					]
-				},
-				"description": "Retorna os detalhes cadastrais de uma única operadora específica."
+				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Exemplo de Sucesso",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/operadoras/00000000000191",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"operadoras",
+								"00000000000191"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"body": "{\n  \"registro_ans\": \"303030\",\n  \"cnpj\": \"00000000000191\",\n  \"razao_social\": \"EXEMPLO SAUDE LTDA\",\n  \"nome_fantasia\": \"EXEMPLO SAUDE\",\n  \"modalidade\": \"Cooperativa Médica\",\n  \"logradouro\": \"Rua Exemplo\",\n  \"numero\": \"100\",\n  \"complemento\": \"Sala 1\",\n  \"bairro\": \"Centro\",\n  \"cidade\": \"Rio de Janeiro\",\n  \"uf\": \"RJ\",\n  \"cep\": \"20000-000\",\n  \"ddd\": \"21\",\n  \"telefone\": \"2222-3333\",\n  \"fax\": null,\n  \"endereco_eletronico\": \"contato@exemplo.com.br\",\n  \"representante\": \"JOAO DA SILVA\",\n  \"cargo_representante\": \"Diretor\",\n  \"regiao_de_comercializacao\": \"Nacional\",\n  \"data_registro_ans\": \"2000-01-01\",\n  \"id\": 1,\n  \"status\": \"Ativa com despesas\"\n}"
+				}
+			]
 		},
 		{
 			"name": "3. Listar Despesas da Operadora",
@@ -92,13 +159,43 @@
 						{
 							"key": "cnpj",
 							"value": "00000000000191",
-							"description": "CNPJ da operadora"
+							"description": "CNPJ da Operadora"
 						}
 					]
-				},
-				"description": "Retorna o histórico completo de despesas consolidadas para a operadora informada."
+				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Exemplo de Sucesso",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/operadoras/00000000000191/despesas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"operadoras",
+								"00000000000191",
+								"despesas"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"body": "[\n  {\n    \"cnpj\": \"00000000000191\",\n    \"razao_social\": \"EXEMPLO SAUDE LTDA\",\n    \"trimestre\": 1,\n    \"ano\": 2023,\n    \"registro_ans\": \"303030\",\n    \"modalidade\": \"Cooperativa Médica\",\n    \"uf\": \"RJ\",\n    \"valor_despesa\": 1500.50\n  }\n]"
+				}
+			]
 		},
 		{
 			"name": "4. Estatísticas (Dashboard)",
@@ -115,10 +212,38 @@
 					"path": [
 						"estatisticas"
 					]
-				},
-				"description": "Retorna dados agregados para o dashboard: Total de despesas, Média global e Top 5 Operadoras com maiores gastos."
+				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Exemplo de Sucesso",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/estatisticas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"estatisticas"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"body": "{\n  \"total_despesas\": 5000000.00,\n  \"media_despesas\": 12000.50,\n  \"top_5_operadoras\": [\n    {\n      \"registro_ans\": \"123456\",\n      \"razao_social\": \"OPERADORA A\",\n      \"total_despesa\": 1000000.00\n    },\n    {\n      \"registro_ans\": \"654321\",\n      \"razao_social\": \"OPERADORA B\",\n      \"total_despesa\": 800000.00\n    },\n    {\n      \"registro_ans\": \"111222\",\n      \"razao_social\": \"OPERADORA C\",\n      \"total_despesa\": 600000.00\n    },\n    {\n      \"registro_ans\": \"333444\",\n      \"razao_social\": \"OPERADORA D\",\n      \"total_despesa\": 400000.00\n    },\n    {\n      \"registro_ans\": \"555666\",\n      \"razao_social\": \"OPERADORA E\",\n      \"total_despesa\": 200000.00\n    }\n  ]\n}"
+				}
+			]
 		}
 	]
 }
