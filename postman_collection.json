@@ -1,0 +1,124 @@
+{
+	"info": {
+		"_postman_id": "intuitive-care-test-id",
+		"name": "Intuitive Care API",
+		"description": "Coleção de rotas para o teste técnico da Intuitive Care (ETL & Visualization).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Listar Operadoras (Busca & Paginação)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operadoras?page=1&limit=10&search=",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operadoras"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1",
+							"description": "Número da página (Default: 1)"
+						},
+						{
+							"key": "limit",
+							"value": "10",
+							"description": "Itens por página (Default: 10, Max: 100)"
+						},
+						{
+							"key": "search",
+							"value": "",
+							"description": "Termo para busca em Razão Social ou CNPJ (Opcional)"
+						}
+					]
+				},
+				"description": "Retorna uma lista paginada de operadoras. Permite filtrar por texto usando o parâmetro `search`."
+			},
+			"response": []
+		},
+		{
+			"name": "2. Buscar Operadora por CNPJ",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operadoras/:cnpj",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operadoras",
+						":cnpj"
+					],
+					"variable": [
+						{
+							"key": "cnpj",
+							"value": "00000000000191",
+							"description": "CNPJ da operadora (apenas números ou string exata do banco)"
+						}
+					]
+				},
+				"description": "Retorna os detalhes cadastrais de uma única operadora específica."
+			},
+			"response": []
+		},
+		{
+			"name": "3. Listar Despesas da Operadora",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operadoras/:cnpj/despesas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operadoras",
+						":cnpj",
+						"despesas"
+					],
+					"variable": [
+						{
+							"key": "cnpj",
+							"value": "00000000000191",
+							"description": "CNPJ da operadora"
+						}
+					]
+				},
+				"description": "Retorna o histórico completo de despesas consolidadas para a operadora informada."
+			},
+			"response": []
+		},
+		{
+			"name": "4. Estatísticas (Dashboard)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/estatisticas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"estatisticas"
+					]
+				},
+				"description": "Retorna dados agregados para o dashboard: Total de despesas, Média global e Top 5 Operadoras com maiores gastos."
+			},
+			"response": []
+		}
+	]
+}
