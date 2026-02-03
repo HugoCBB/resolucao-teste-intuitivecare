@@ -83,6 +83,14 @@ teste-intuitiveCare/
 ```
 
 ---
+## 📡 Coleção no postman
+
+Para facilitar os testes, uma coleção completa com todas as rotas e exemplos de resposta está disponível no repositório.
+
+📥 **[Clique aqui para baixar a Coleção do Postman](./postman_collection.json)**
+
+
+
 
 ## ⚖️ Trade-offs Técnicos
 
